@@ -8,17 +8,12 @@
 <body <?php body_class(); ?>>
   <header class="site-header">
     <div class="container">
-      <!-- 左側 Logo -->
-      <div class="logo" href="<?php echo esc_url( home_url() ); ?>">
+      <a class="logo" href="<?php echo esc_url( home_url() ); ?>">
         紐大房產資訊
-      </div>
-
-      <!-- 導航+按鈕 -->
+      </a>
       <div class="nav-group">
         <nav>
           <ul>
-
-            <!-- 買賣、租房（有下拉） -->
             <li class="has-dropdown">
               <a href="#">買賣・租房 <span class="nav-arrow">▾</span></a>
               <ul class="dropdown">
@@ -27,8 +22,6 @@
                 <li><a href="#">租房</a></li>
               </ul>
             </li>
-
-            <!-- 室內設計（有下拉） -->
             <li class="has-dropdown">
               <a href="#">室內設計 <span class="nav-arrow">▾</span></a>
               <ul class="dropdown">
@@ -37,13 +30,13 @@
                 <li><a href="#">傢俱選物</a></li>
               </ul>
             </li>
-
             <li><a href="#">美國房產資訊</a></li>
+            <li><a href="<?php echo esc_url( get_permalink( get_page_by_path('neighborhoods') ) ); ?>">社區介紹</a></li>
             <li><a href="#">提供的服務及流程</a></li>
-            <li><a href="#">關於我們</a></li>
+            <li><a href="<?php echo esc_url( get_permalink( get_page_by_path('about') ) ); ?>">關於我們</a></li>
           </ul>
         </nav>
-        <a href="#" class="contact-btn">聯絡我們</a>
+        <a href="<?php echo esc_url( get_permalink( get_page_by_path('contact') ) ); ?>" class="contact-btn">聯絡我們</a>
       </div>
     </div>
   </header>

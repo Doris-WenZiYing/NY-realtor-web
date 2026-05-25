@@ -1,51 +1,35 @@
 <?php get_header(); ?>
 
 <section class="banner">
-  <img
-    src="<?php echo get_template_directory_uri(); ?>/assets/images/banner.jpg"
-    alt="Banner"
-    loading="eager"
-  >
+  <img src="<?php echo get_template_directory_uri(); ?>/assets/images/Banner.jpg"
+       alt="Banner" loading="eager">
 </section>
 
-<section class="grid-container">
-  <?php
-    $neighborhoods = [
-      'kips-bay'             => 'Kips Bay / 基普斯灣',
-      'lic'                  => 'LIC / 長島市',
-      'soho'                 => 'SoHo / 蘇活區',
-      'financial-district'   => 'Financial District / 金融區',
-      'meatpacking-district' => 'Meatpacking District / 屠宰場區',
-      'noho'                 => 'NoHo / 諾霍區',
-      'little-italy'         => 'Little Italy / 小意大利',
-      'chelsea'              => 'Chelsea / 切爾西',
-      'east-village'         => 'East Village / 東村',
-      'clinton'              => 'Clinton / 克林頓',
-      'hells-kitchen'        => "Hell's Kitchen / 地獄廚房",
-      'west-village'         => 'West Village / 西村',
-      'lower-east-side'      => 'Lower East Side / 下東城區',
-      'murray-hill'          => 'Murray Hill / 莫瑞山',
-      'turtle-bay'           => 'Turtle Bay / 龜灣',
-      'bowery'               => 'Bowery / 包厘街',
-    ];
+<!-- 首頁主體：關於我們內容（文字待補） -->
+<section class="about-home">
+  <div class="about-home-inner">
 
-    foreach ( $neighborhoods as $slug => $label ) :
-      $img_url = get_template_directory_uri() . "/assets/images/{$slug}.jpg";
-      $page    = get_page_by_path( $slug );
-      $url     = $page ? get_permalink( $page->ID ) : '#';
-  ?>
-    <a href="<?php echo esc_url( $url ); ?>" class="grid-item">
-      <img
-        src="<?php echo esc_url( $img_url ); ?>"
-        alt="<?php echo esc_attr( $label ); ?>"
-        loading="lazy"
-        width="400"
-        height="140"
-        onerror="this.src='/wp-content/themes/<?php echo esc_attr( get_template() ); ?>/assets/images/placeholder.jpg';"
-      >
-      <h3><?php echo esc_html( $label ); ?></h3>
-    </a>
-  <?php endforeach; ?>
+    <div class="about-home-text">
+      <h2>關於紐大房產資訊</h2>
+      <p class="about-lead">
+        <!-- 業主文字待填 -->
+        我們是專注於美國紐約房地產市場的專業顧問團隊，提供買房、賣屋、租賃及室內設計一站式服務。
+      </p>
+      <p>
+        <!-- 業主文字待填 -->
+        憑藉多年在紐約各社區的深耕經驗，我們協助台灣及海外客戶在複雜的美國不動產市場中找到最適合的投資與居住方案。
+      </p>
+      <a href="<?php echo esc_url( get_permalink( get_page_by_path('about') ) ); ?>" class="about-more-btn">
+        了解更多 →
+      </a>
+    </div>
+
+    <div class="about-home-image">
+      <img src="<?php echo get_template_directory_uri(); ?>/assets/images/financial-district.jpg"
+           alt="紐約" loading="lazy" width="600" height="400">
+    </div>
+
+  </div>
 </section>
 
 <?php get_footer(); ?>
