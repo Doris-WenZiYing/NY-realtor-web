@@ -1,0 +1,10 @@
+.sa{opacity:0;transition:opacity .75s ease,transform .75s ease;will-change:opacity,transform}
+.sa:not(.sa-left):not(.sa-right):not(.sa-fade){transform:translateY(40px)}
+.sa.sa-left{transform:translateX(-50px)}
+.sa.sa-right{transform:translateX(50px)}
+.sa.sa-fade{transform:none}
+.sa.sa-visible{opacity:1;transform:translate(0,0)}
+.sa.sa-delay-1{transition-delay:.1s}
+.sa.sa-delay-2{transition-delay:.25s}
+.sa.sa-delay-3{transition-delay:.4s}
+.sa.sa-delay-4{transition-delay:.55s}

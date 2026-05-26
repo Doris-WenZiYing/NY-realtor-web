@@ -64,7 +64,7 @@ if ( isset($_POST['contact_nonce']) && wp_verify_nonce($_POST['contact_nonce'], 
         '產業'         => $fields['industry'],
         '得知管道'     => $fields['channel'],
         '預約場次'     => $fields['session'],
-        '有興趣城市'   => $fields['city'],
+        '有興趣社區'   => $fields['city'],
         '預算（美金）' => $fields['budget'],
         '購買時程'     => $fields['timeline'],
         '置產需求'     => $fields['message'],
@@ -164,20 +164,44 @@ if ( isset($_POST['contact_nonce']) && wp_verify_nonce($_POST['contact_nonce'], 
 
           <div class="form-grid-2">
             <div class="form-row">
-              <label>預約專人諮詢，選擇場次 *</label>
+              <label>方便聯絡時間 *</label>
               <select name="contact_session" required>
-                <option value="" disabled selected>請選擇</option>
-                <option>線上諮詢（視訊）</option><option>台北面談</option>
-                <option>紐約現場參觀</option><option>不限，依顧問安排</option>
+                <option value="" disabled selected>請選擇時段</option>
+                <option>09:00 – 10:00</option>
+                <option>10:00 – 11:00</option>
+                <option>11:00 – 12:00</option>
+                <option>12:00 – 13:00</option>
+                <option>13:00 – 14:00</option>
+                <option>14:00 – 15:00</option>
+                <option>15:00 – 16:00</option>
+                <option>16:00 – 17:00</option>
+                <option>17:00 – 18:00</option>
+                <option>18:00 – 19:00</option>
+                <option>19:00 – 20:00</option>
+                <option>20:00 – 21:00</option>
+                <option>21:00 – 22:00</option>
               </select>
             </div>
             <div class="form-row">
-              <label>有興趣的美國城市 *</label>
+              <label>有興趣的社區 *</label>
               <select name="contact_city" required>
-                <option value="" disabled selected>請選擇</option>
-                <option>紐約 New York</option><option>洛杉磯 Los Angeles</option>
-                <option>舊金山 San Francisco</option><option>波士頓 Boston</option>
-                <option>邁阿密 Miami</option><option>其他</option>
+                <option value="" disabled selected>請選擇社區</option>
+                <option>Kips Bay / 基普斯灣</option>
+                <option>LIC / 長島市</option>
+                <option>SoHo / 蘇活區</option>
+                <option>Financial District / 金融區</option>
+                <option>Meatpacking District / 屠宰場區</option>
+                <option>NoHo / 諾霍區</option>
+                <option>Little Italy / 小意大利</option>
+                <option>Chelsea / 切爾西</option>
+                <option>East Village / 東村</option>
+                <option>Clinton / 克林頓</option>
+                <option>Hell's Kitchen / 地獄廚房</option>
+                <option>West Village / 西村</option>
+                <option>Lower East Side / 下東城區</option>
+                <option>Murray Hill / 莫瑞山</option>
+                <option>Turtle Bay / 龜灣</option>
+                <option>Bowery / 包厘街</option>
               </select>
             </div>
           </div>

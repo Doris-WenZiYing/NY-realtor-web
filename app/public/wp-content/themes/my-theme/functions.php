@@ -7,12 +7,21 @@ function mytheme_setup() {
 }
 add_action( 'after_setup_theme', 'mytheme_setup' );
 
-// 2. Enqueue styles
+// 2. Enqueue styles + scripts
 function mytheme_enqueue_assets() {
     wp_enqueue_style( 'mytheme-style', get_stylesheet_uri() );
     wp_enqueue_style( 'mytheme-main',
         get_template_directory_uri() . '/assets/css/main.css',
+        [], '2.0'
+    );
+    wp_enqueue_style( 'sa-style',
+        get_template_directory_uri() . '/assets/css/scroll-animate.css',
         [], '1.0'
+    );
+    wp_enqueue_script( 'sa-script',
+        get_template_directory_uri() . '/assets/js/scroll-animate.js',
+        [], '1.0',
+        true
     );
 }
 add_action( 'wp_enqueue_scripts', 'mytheme_enqueue_assets' );
@@ -39,7 +48,7 @@ add_action( 'init', function() {
     ]);
 });
 
-// 4. 後台列表欄位（所有欄位）
+// 4. 後台列表欄位
 add_filter( 'manage_inquiry_posts_columns', function( $cols ) {
     unset( $cols['date'] );
     return [
