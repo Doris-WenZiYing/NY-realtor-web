@@ -766,3 +766,135 @@ body {
   .nb-stats-inner { grid-template-columns: repeat(2, 1fr); }
   .nb-feature-img img { height: 260px; }
 }
+
+
+
+/* ════════════════════════════════
+   Header：sticky，永遠在最上方
+   ════════════════════════════════ */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+}
+
+/* ════════════════════════════════
+   社區內頁 v3（正確版）
+   ════════════════════════════════ */
+
+/* Hero：正常在頁面流裡，高度撐滿視窗扣掉 header */
+.nb3-hero {
+  height: calc(100vh - 64px);   /* 64px = header 大約高度 */
+  overflow: hidden;
+  position: relative;
+}
+.nb3-hero img {
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+}
+.nb3-scroll-hint {
+  position: absolute;
+  bottom: 2rem; left: 50%;
+  transform: translateX(-50%);
+  color: #fff; font-size: 2rem;
+  animation: nb3-bounce 1.8s infinite;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+}
+@keyframes nb3-bounce {
+  0%,100%{ transform: translateX(-50%) translateY(0); }
+  50%    { transform: translateX(-50%) translateY(10px); }
+}
+
+/* 內容區：白底，緊跟在 hero 下面 */
+.nb3-content {
+  background: #fff;
+  padding: 3rem 2rem 4rem;
+  position: relative;
+  z-index: 1;
+}
+
+/* 三欄 Grid */
+.nb3-grid {
+  max-width: 1300px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 200px 1fr 360px;
+  gap: 2.5rem;
+  align-items: start;
+}
+
+/* 左欄 */
+.nb3-aside { min-width: 0; }
+
+.nb3-breadcrumb {
+  display: flex; flex-wrap: wrap;
+  align-items: center; gap: 0.4rem;
+  font-size: 0.88rem; color: #555;
+  margin-bottom: 1.5rem;
+}
+.nb3-breadcrumb a { color: #0047AB; text-decoration: none; }
+.nb3-breadcrumb a:hover { text-decoration: underline; }
+.nb3-bc-current { color: #333; font-weight: 600; }
+
+.nb3-selector { position: relative; }
+.nb3-selector-btn {
+  background: none; border: none;
+  font-size: 0.9rem; color: #0B2A4C;
+  cursor: pointer; padding: 0;
+  font-family: inherit;
+  display: flex; align-items: center; gap: 0.4rem;
+}
+.nb3-selector-btn:hover { color: #BF9940; }
+.nb3-arrow { font-size: 0.75rem; transition: transform 0.2s; }
+.nb3-selector.open .nb3-arrow { transform: rotate(180deg); }
+
+.nb3-selector-list {
+  display: none;
+  position: absolute;
+  top: calc(100% + 6px); left: 0;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-top: 2px solid #BF9940;
+  list-style: none;
+  min-width: 250px; max-height: 320px;
+  overflow-y: auto; z-index: 100;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+}
+.nb3-selector.open .nb3-selector-list { display: block; }
+.nb3-selector-list li a {
+  display: block; padding: 0.55rem 1rem;
+  font-size: 0.88rem; color: #333;
+  text-decoration: none;
+  border-bottom: 1px solid #f0f0f0;
+}
+.nb3-selector-list li a:hover { background: #f5f5f0; }
+.nb3-selector-list li.nb3-active a { color: #BF9940; font-weight: 700; }
+.nb3-dot { color: #BF9940; }
+
+/* 中欄 */
+.nb3-main { min-width: 0; }
+.nb3-section { margin-bottom: 3rem; }
+.nb3-section h2 { font-size: 1.3rem; color: #0B2A4C; margin-bottom: 0.6rem; }
+.nb3-divider { height: 1px; background: #ddd; margin-bottom: 1.2rem; }
+.nb3-body { color: #444; line-height: 1.9; font-size: 1rem; }
+.nb3-body p { margin-bottom: 1rem; }
+
+/* 右欄：地圖 sticky */
+.nb3-map-col { min-width: 0; }
+.nb3-map-sticky { position: sticky; top: 90px; }
+.nb3-map-label { font-size: 0.85rem; color: #777; margin-bottom: 0.5rem; }
+.nb3-map-sticky iframe {
+  width: 100%; height: 480px;
+  border: none; border-radius: 4px; display: block;
+}
+
+/* RWD */
+@media (max-width: 1100px) {
+  .nb3-grid { grid-template-columns: 180px 1fr 300px; }
+}
+@media (max-width: 860px) {
+  .nb3-grid { grid-template-columns: 1fr; }
+  .nb3-map-sticky { position: static; }
+  .nb3-map-sticky iframe { height: 280px; }
+  .nb3-hero { height: calc(100vh - 56px); }
+}
