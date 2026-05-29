@@ -3,7 +3,6 @@
  * Template Name: 聯絡我們
  */
 
-// ── 註冊 Custom Post Type（只跑一次，掛在 init）──
 add_action( 'init', function() {
   register_post_type( 'inquiry', [
     'labels' => [
@@ -15,19 +14,25 @@ add_action( 'init', function() {
       'search_items'       => '搜尋詢問',
       'not_found'          => '找不到詢問紀錄',
     ],
-    'public'              => false,
-    'show_ui'             => true,
-    'show_in_menu'        => true,
-    'menu_icon'           => 'dashicons-email-alt',
-    'supports'            => [ 'title' ],
-    'capability_type'     => 'post',
-    'map_meta_cap'        => true,
+    'public'          => false,
+    'show_ui'         => true,
+    'show_in_menu'    => true,
+    'menu_icon'       => 'dashicons-email-alt',
+    'supports'        => [ 'title' ],
+    'capability_type' => 'post',
+    'map_meta_cap'    => true,
   ]);
 });
 
 get_header();
+?>
 
-// ── 表單送出處理 ──
+<style>body { padding-top: 0 !important; }</style>
+<div class="site-banner">
+  <img src="<?php echo get_template_directory_uri(); ?>/assets/images/pic.jpg" alt="" loading="eager">
+</div>
+
+<?php
 $sent  = false;
 $error = '';
 
@@ -48,8 +53,6 @@ if ( isset($_POST['contact_nonce']) && wp_verify_nonce($_POST['contact_nonce'], 
   ];
 
   if ( $fields['name'] && $fields['email'] && $fields['budget'] && $fields['timeline'] && $fields['agreed'] ) {
-
-    // 存進資料庫
     $post_id = wp_insert_post([
       'post_type'   => 'inquiry',
       'post_title'  => $fields['name'] . ' — ' . current_time('Y/m/d H:i'),
@@ -74,21 +77,15 @@ if ( isset($_POST['contact_nonce']) && wp_verify_nonce($_POST['contact_nonce'], 
       foreach ( $meta as $key => $val ) {
         update_post_meta( $post_id, $key, $val );
       }
-
-      // 同時寄通知信到管理員 email
       $to      = get_option('admin_email');
       $subject = '【紐大房產】新詢問 — ' . $fields['name'];
       $body    = '';
-      foreach ( $meta as $key => $val ) {
-        $body .= "{$key}：{$val}\n";
-      }
+      foreach ( $meta as $key => $val ) { $body .= "{$key}：{$val}\n"; }
       wp_mail( $to, $subject, $body, [ 'Reply-To: ' . $fields['name'] . ' <' . $fields['email'] . '>' ] );
-
       $sent = true;
     } else {
       $error = '儲存失敗，請稍後再試。';
     }
-
   } else {
     $error = '請填寫所有必填欄位，並勾選同意聲明。';
   }
@@ -97,7 +94,6 @@ if ( isset($_POST['contact_nonce']) && wp_verify_nonce($_POST['contact_nonce'], 
 
 <section class="contact-section">
   <div class="contact-inner">
-
     <div class="contact-info">
       <h2>聯絡我們</h2>
       <p>歡迎透過表單與我們聯繫，我們將盡快回覆您的詢問。</p>
@@ -167,18 +163,12 @@ if ( isset($_POST['contact_nonce']) && wp_verify_nonce($_POST['contact_nonce'], 
               <label>方便聯絡時間 *</label>
               <select name="contact_session" required>
                 <option value="" disabled selected>請選擇時段</option>
-                <option>09:00 – 10:00</option>
-                <option>10:00 – 11:00</option>
-                <option>11:00 – 12:00</option>
-                <option>12:00 – 13:00</option>
-                <option>13:00 – 14:00</option>
-                <option>14:00 – 15:00</option>
-                <option>15:00 – 16:00</option>
-                <option>16:00 – 17:00</option>
-                <option>17:00 – 18:00</option>
-                <option>18:00 – 19:00</option>
-                <option>19:00 – 20:00</option>
-                <option>20:00 – 21:00</option>
+                <option>09:00 – 10:00</option><option>10:00 – 11:00</option>
+                <option>11:00 – 12:00</option><option>12:00 – 13:00</option>
+                <option>13:00 – 14:00</option><option>14:00 – 15:00</option>
+                <option>15:00 – 16:00</option><option>16:00 – 17:00</option>
+                <option>17:00 – 18:00</option><option>18:00 – 19:00</option>
+                <option>19:00 – 20:00</option><option>20:00 – 21:00</option>
                 <option>21:00 – 22:00</option>
               </select>
             </div>
@@ -186,22 +176,14 @@ if ( isset($_POST['contact_nonce']) && wp_verify_nonce($_POST['contact_nonce'], 
               <label>有興趣的社區 *</label>
               <select name="contact_city" required>
                 <option value="" disabled selected>請選擇社區</option>
-                <option>Kips Bay / 基普斯灣</option>
-                <option>LIC / 長島市</option>
-                <option>SoHo / 蘇活區</option>
-                <option>Financial District / 金融區</option>
-                <option>Meatpacking District / 屠宰場區</option>
-                <option>NoHo / 諾霍區</option>
-                <option>Little Italy / 小意大利</option>
-                <option>Chelsea / 切爾西</option>
-                <option>East Village / 東村</option>
-                <option>Clinton / 克林頓</option>
-                <option>Hell's Kitchen / 地獄廚房</option>
-                <option>West Village / 西村</option>
-                <option>Lower East Side / 下東城區</option>
-                <option>Murray Hill / 莫瑞山</option>
-                <option>Turtle Bay / 龜灣</option>
-                <option>Bowery / 包厘街</option>
+                <option>Kips Bay / 基普斯灣</option><option>LIC / 長島市</option>
+                <option>SoHo / 蘇活區</option><option>Financial District / 金融區</option>
+                <option>Meatpacking District / 屠宰場區</option><option>NoHo / 諾霍區</option>
+                <option>Little Italy / 小意大利</option><option>Chelsea / 切爾西</option>
+                <option>East Village / 東村</option><option>Clinton / 克林頓</option>
+                <option>Hell's Kitchen / 地獄廚房</option><option>West Village / 西村</option>
+                <option>Lower East Side / 下東城區</option><option>Murray Hill / 莫瑞山</option>
+                <option>Turtle Bay / 龜灣</option><option>Bowery / 包厘街</option>
               </select>
             </div>
           </div>
@@ -246,7 +228,6 @@ if ( isset($_POST['contact_nonce']) && wp_verify_nonce($_POST['contact_nonce'], 
         </form>
       <?php endif; ?>
     </div>
-
   </div>
 </section>
 

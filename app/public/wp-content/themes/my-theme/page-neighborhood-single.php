@@ -27,41 +27,86 @@ $neighborhoods = [
 ];
 
 $info  = $neighborhoods[$slug] ?? [ 'en' => $title, 'zh' => '' ];
-$img   = get_template_directory_uri() . '/assets/images/pic.jpg';
 $map_q = urlencode( $info['en'] . ', New York, NY' );
 ?>
 
-<!-- Hero：正常在頁面流裡，高度 = 視窗高度 - header 高度 -->
-<div class="nb3-hero">
-  <img src="<?php echo esc_url($img); ?>" alt="<?php echo esc_attr($info['en']); ?>">
-  <div class="nb3-scroll-hint">↓</div>
+<style>
+/* 這頁專用 */
+body { padding-top: 0 !important; background: #fff; }
+
+/* Hero：fixed，z-index 1，JS 控制淡出後完全消失 */
+.nb3-hero {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100vh;
+  z-index: 1;
+  overflow: hidden;
+  transition: opacity 0.2s ease;
+}
+.nb3-hero img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.nb3-scroll-hint {
+  position: absolute;
+  bottom: 2rem; left: 50%;
+  transform: translateX(-50%);
+  color: #fff; font-size: 2rem;
+  animation: nb3-bounce 1.8s infinite;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+}
+@keyframes nb3-bounce {
+  0%,100% { transform: translateX(-50%) translateY(0); }
+  50%      { transform: translateX(-50%) translateY(10px); }
+}
+
+/* Spacer：height = 100vh，撐開讓內容在滾完 hero 後才出現 */
+.nb3-spacer { height: 100vh; }
+
+/* 內容：z-index 2，白底，蓋住 hero */
+.nb3-content {
+  position: relative;
+  z-index: 2;
+  background: #fff;
+  padding: 0;
+  /* 確保內容延伸到頁面底部，不讓 hero 從底部漏出 */
+  min-height: 100vh;
+}
+</style>
+
+<!-- Hero（fixed，JS 淡出）-->
+<div class="nb3-hero" id="nbHero">
+  <img src="<?php echo get_template_directory_uri(); ?>/assets/images/pic.jpg"
+       alt="<?php echo esc_attr($info['en']); ?>">
+  <div class="nb3-scroll-hint" id="nbArrow">↓</div>
 </div>
 
-<!-- 內容：白底，跟在 hero 下面，往下滑自然蓋住 hero -->
+<!-- Spacer -->
+<div class="nb3-spacer"></div>
+
+<!-- 白底內容，z-index 2 蓋住 hero -->
 <div class="nb3-content">
   <div class="nb3-grid">
 
-    <!-- 左欄：breadcrumb + 社區選單 -->
     <aside class="nb3-aside">
-      <nav class="nb3-breadcrumb sa">
+      <nav class="nb3-breadcrumb">
         <a href="<?php echo esc_url(home_url()); ?>">紐大房產資訊</a>
-        <span>›</span>
+        <span class="nb3-bc-sep">›</span>
         <span class="nb3-bc-current"><?php echo esc_html($info['en']); ?></span>
       </nav>
 
-      <div class="nb3-selector sa sa-delay-1">
+      <div class="nb3-selector">
         <button class="nb3-selector-btn" id="nb3Btn">
           查看更多社區 <span class="nb3-arrow">▾</span>
         </button>
-        <ul class="nb3-selector-list" id="nb3List">
+        <ul class="nb3-selector-list">
           <?php foreach ( $neighborhoods as $s => $n ) :
             $pg  = get_page_by_path($s);
             $url = $pg ? get_permalink($pg->ID) : '#';
           ?>
-            <li class="<?php echo $s === $slug ? 'nb3-active' : ''; ?>">
-              <a href="<?php echo esc_url($url); ?>">
-                <?php if ($s === $slug) echo '<span class="nb3-dot">●</span> '; ?>
-                <?php echo esc_html($n['en'] . ' / ' . $n['zh']); ?>
+            <li>
+              <a href="<?php echo esc_url($url); ?>"
+                 class="<?php echo $s === $slug ? 'nb3-list-current' : ''; ?>">
+                <span class="nb3-list-en"><?php echo esc_html($n['en']); ?></span>
+                <span class="nb3-list-zh"><?php echo esc_html($n['zh']); ?></span>
+                <?php if ($s === $slug) echo '<span class="nb3-list-dot">●</span>'; ?>
               </a>
             </li>
           <?php endforeach; ?>
@@ -69,32 +114,31 @@ $map_q = urlencode( $info['en'] . ', New York, NY' );
       </div>
     </aside>
 
-    <!-- 中欄：主內容 -->
     <main class="nb3-main">
-      <div class="nb3-section sa">
+      <div class="nb3-section">
         <h2><?php echo esc_html($info['en']); ?> 社區介紹</h2>
         <div class="nb3-divider"></div>
-        <div class="nb3-body sa sa-delay-1">
+        <div class="nb3-body">
           <?php
             while ( have_posts() ) { the_post(); }
             $c = get_the_content();
-            echo $c ? apply_filters('the_content', $c) : '<p>這個社區的詳細介紹即將推出，歡迎聯絡我們了解更多資訊。</p>';
+            echo $c ? apply_filters('the_content', $c)
+                    : '<p>這個社區的詳細介紹即將推出，歡迎聯絡我們了解更多資訊。</p>';
           ?>
         </div>
       </div>
 
-      <div class="nb3-section sa">
+      <div class="nb3-section">
         <h2><?php echo esc_html($info['en']); ?> 社區前景</h2>
         <div class="nb3-divider"></div>
-        <div class="nb3-body sa sa-delay-1">
+        <div class="nb3-body">
           <p>市場分析與未來發展潛力即將更新，請持續關注。</p>
         </div>
       </div>
     </main>
 
-    <!-- 右欄：黏性地圖 -->
     <aside class="nb3-map-col">
-      <div class="nb3-map-sticky sa">
+      <div class="nb3-map-sticky">
         <p class="nb3-map-label">在地圖上查看</p>
         <iframe
           src="https://maps.google.com/maps?q=<?php echo $map_q; ?>&output=embed&z=15"
@@ -108,6 +152,33 @@ $map_q = urlencode( $info['en'] . ', New York, NY' );
 </div>
 
 <script>
+(function(){
+  var hero  = document.getElementById('nbHero');
+  var arrow = document.getElementById('nbArrow');
+  var vh    = window.innerHeight;
+
+  function onScroll(){
+    var y = window.scrollY;
+    // 80%~100% 的 vh 範圍內淡出，超過 100vh 完全消失
+    if (y >= vh) {
+      hero.style.opacity  = '0';
+      hero.style.pointerEvents = 'none';
+    } else if (y >= vh * 0.8) {
+      var op = 1 - (y - vh * 0.8) / (vh * 0.2);
+      hero.style.opacity  = op;
+      arrow.style.opacity = op;
+      hero.style.pointerEvents = 'none';
+    } else {
+      hero.style.opacity  = '1';
+      arrow.style.opacity = '1';
+      hero.style.pointerEvents = '';
+    }
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
+
 document.getElementById('nb3Btn').addEventListener('click', function(e){
   e.stopPropagation();
   document.querySelector('.nb3-selector').classList.toggle('open');
