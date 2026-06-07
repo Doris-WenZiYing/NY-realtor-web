@@ -13,16 +13,35 @@
 <section class="grid-container">
 <?php
   $neighborhoods = [
-    'kips-bay'=>'Kips Bay / 基普斯灣','lic'=>'LIC / 長島市','soho'=>'SoHo / 蘇活區',
-    'financial-district'=>'Financial District / 金融區','meatpacking-district'=>'Meatpacking District / 屠宰場區',
-    'noho'=>'NoHo / 諾霍區','little-italy'=>'Little Italy / 小意大利','chelsea'=>'Chelsea / 切爾西',
-    'east-village'=>'East Village / 東村','clinton'=>'Clinton / 克林頓',
-    'hells-kitchen'=>"Hell's Kitchen / 地獄廚房",'west-village'=>'West Village / 西村',
-    'lower-east-side'=>'Lower East Side / 下東城區','murray-hill'=>'Murray Hill / 莫瑞山',
-    'turtle-bay'=>'Turtle Bay / 龜灣','bowery'=>'Bowery / 包厘街',
+    'kips-bay'             => 'Kips Bay / 基普斯灣',
+    'lic'                  => 'LIC / 長島市',
+    'soho'                 => 'SoHo / 蘇活區',
+    'financial-district'   => 'Financial District / 金融區',
+    'meatpacking-district' => 'Meatpacking District / 屠宰場區',
+    'noho'                 => 'NoHo / 諾霍區',
+    'little-italy'         => 'Little Italy / 小意大利',
+    'chelsea'              => 'Chelsea / 切爾西',
+    'east-village'         => 'East Village / 東村',
+    'clinton'              => 'Clinton / 克林頓',
+    'hells-kitchen'        => "Hell's Kitchen / 地獄廚房",
+    'west-village'         => 'West Village / 西村',
+    'lower-east-side'      => 'Lower East Side / 下東城區',
+    'murray-hill'          => 'Murray Hill / 莫瑞山',
+    'turtle-bay'           => 'Turtle Bay / 龜灣',
+    'bowery'               => 'Bowery / 包厘街',
+    'midtown'              => 'Midtown / 中城',
+    'greenwich-village'    => 'Greenwich Village / 格林威治村',
   ];
+
+  // 圖片對應（新社區暫用現有圖片）
+  $img_map = [
+    'midtown'           => 'financial-district',
+    'greenwich-village' => 'west-village',
+  ];
+
   foreach ($neighborhoods as $slug => $label):
-    $img = get_template_directory_uri()."/assets/images/{$slug}.jpg";
+    $img_slug = $img_map[$slug] ?? $slug;
+    $img = get_template_directory_uri()."/assets/images/{$img_slug}.jpg";
     $pg  = get_page_by_path($slug);
     $url = $pg ? get_permalink($pg->ID) : '#';
 ?>

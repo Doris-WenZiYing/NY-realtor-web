@@ -24,7 +24,16 @@ $neighborhoods = [
   'murray-hill'          => [ 'en' => 'Murray Hill',          'zh' => '莫瑞山'   ],
   'turtle-bay'           => [ 'en' => 'Turtle Bay',           'zh' => '龜灣'     ],
   'bowery'               => [ 'en' => 'Bowery',               'zh' => '包厘街'   ],
+  'midtown'              => [ 'en' => 'Midtown',              'zh' => '中城'     ],
+  'greenwich-village'    => [ 'en' => 'Greenwich Village',    'zh' => '格林威治村'],
 ];
+
+// 新社區暫用現有圖片
+$img_map = [
+  'midtown'           => 'financial-district',
+  'greenwich-village' => 'west-village',
+];
+$img_slug = $img_map[$slug] ?? $slug;
 
 $info  = $neighborhoods[$slug] ?? [ 'en' => $title, 'zh' => '' ];
 $map_q = urlencode( $info['en'] . ', New York, NY' );
@@ -61,19 +70,29 @@ body { padding-top: 0 !important; background: #fff; }
 .nb3-spacer { height: 100vh; }
 
 /* 內容：z-index 2，白底，蓋住 hero */
+/* 內容：z-index 2，白底，蓋住 hero */
 .nb3-content {
   position: relative;
   z-index: 2;
   background: #fff;
   padding: 0;
-  /* 確保內容延伸到頁面底部，不讓 hero 從底部漏出 */
   min-height: 100vh;
 }
+
+/* 加在這裡 ↓ */
+.nb3-full-content ul {
+  margin: 0.5rem 0 1rem 0;
+  padding-left: 1.2rem;
+  color: #444;
+  line-height: 1.9;
+}
+.nb3-full-content li { margin-bottom: 0.4rem; }
+
 </style>
 
 <!-- Hero（fixed，JS 淡出）-->
 <div class="nb3-hero" id="nbHero">
-  <img src="<?php echo get_template_directory_uri(); ?>/assets/images/pic.jpg"
+  <img src="<?php echo has_post_thumbnail() ? get_the_post_thumbnail_url(null, 'full') : get_template_directory_uri() . '/assets/images/pic.jpg'; ?>"
        alt="<?php echo esc_attr($info['en']); ?>">
   <div class="nb3-scroll-hint" id="nbArrow">↓</div>
 </div>
@@ -115,25 +134,13 @@ body { padding-top: 0 !important; background: #fff; }
     </aside>
 
     <main class="nb3-main">
-      <div class="nb3-section">
-        <h2><?php echo esc_html($info['en']); ?> 社區介紹</h2>
-        <div class="nb3-divider"></div>
-        <div class="nb3-body">
-          <?php
-            while ( have_posts() ) { the_post(); }
-            $c = get_the_content();
-            echo $c ? apply_filters('the_content', $c)
-                    : '<p>這個社區的詳細介紹即將推出，歡迎聯絡我們了解更多資訊。</p>';
-          ?>
-        </div>
-      </div>
-
-      <div class="nb3-section">
-        <h2><?php echo esc_html($info['en']); ?> 社區前景</h2>
-        <div class="nb3-divider"></div>
-        <div class="nb3-body">
-          <p>市場分析與未來發展潛力即將更新，請持續關注。</p>
-        </div>
+      <div class="nb3-body nb3-full-content">
+        <?php
+          while ( have_posts() ) { the_post(); }
+          $c = get_the_content();
+          echo $c ? apply_filters('the_content', $c)
+                  : '<p>這個社區的詳細介紹即將推出，歡迎聯絡我們了解更多資訊。</p>';
+        ?>
       </div>
     </main>
 
